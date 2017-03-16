@@ -7,14 +7,16 @@ const pgPromise = require('pg-promise')();
 const db = pgPromise(process.env.DATABASE_URL);
 
 // create table if not present
-db.query('CREATE EXTENSION IF NOT EXISTS citext;');
-db.query(
-  `CREATE TABLE IF NOT EXISTS data (
-    url CITEXT,
-    id CITEXT,
-    PRIMARY KEY(id, url)
-  )`
-);
+db.tx(async (t) => {
+  await t.none('CREATE EXTENSION IF NOT EXISTS citext;');
+  await t.none(
+    `CREATE TABLE IF NOT EXISTS data (
+      url CITEXT,
+      id CITEXT,
+      PRIMARY KEY(id, url)
+    )`
+  );
+});
 
 // views
 import render from 'koa-ejs';
