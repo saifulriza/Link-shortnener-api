@@ -3,14 +3,23 @@
   "version": "0.0.1",
   "description": "A URL shortener like bit.ly",
   "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Cymen Vig <cymenvig@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "koa": "^2.2.0",
+    "koa-bodyparser": "^4.1.0",
     "koa-ejs": "^4.0.0",
-    "koa-router": "^5.4.0"
+    "koa-router": "7.0.1",
+    "koa-static": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.2.2",
+    "webpack": "^2.2.1"
+  },
+  "scripts": {
+    "start": "babel-node --presets env src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
