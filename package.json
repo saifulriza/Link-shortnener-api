@@ -5,6 +5,9 @@
   "main": "src/index.js",
   "author": "Cymen Vig <cymenvig@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "7.7.3"
+  },
   "dependencies": {
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
