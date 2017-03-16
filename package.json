@@ -20,7 +20,8 @@
     "webpack": "^2.2.1"
   },
   "scripts": {
-    "start": "nodemon src/index --exec babel-node --presets env",
+    "start": "babel-node --presets env src/index",
+    "dev": "nodemon src/index --exec babel-node --presets env",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
