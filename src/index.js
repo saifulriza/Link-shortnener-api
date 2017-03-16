@@ -28,7 +28,7 @@ const router = new Router();
 
 router
 	.get('/', (ctx) => {
-		ctx.body = 'Hello world!';
+		return ctx.render('home');
 	});
 
 app.use(router.routes());
