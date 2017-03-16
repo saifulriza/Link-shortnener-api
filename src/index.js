@@ -2,6 +2,20 @@ import Koa from 'koa';
 
 const app = new Koa();
 
+// database
+const pgPromise = require('pg-promise')();
+const db = pgPromise(process.env.DATABASE_URL);
+
+// create table if not present
+db.query('CREATE EXTENSION IF NOT EXISTS citext;');
+db.query(
+  `CREATE TABLE IF NOT EXISTS data (
+    url CITEXT,
+    id CITEXT,
+    PRIMARY KEY(id, url)
+  )`
+);
+
 // views
 import render from 'koa-ejs';
 render(
@@ -32,14 +46,33 @@ router
   .get('/', (ctx) => {
     return ctx.render('home');
   })
-  .post('/', (ctx) => {
+  .post('/', async (ctx) => {
     const { url  } = ctx.request.body;
 
-    // TODO
-    // - if url already shortened, return existing short id
-    // - if url not already shortened, make short id, persist it and return it
+    const row = await db.oneOrNone('SELECT id FROM data WHERE url = $1', url);
+    let id;
+    if (row) {
+      id = row.id;
+    } else {
+      id = shortId(url);
+      await db.none('INSERT INTO data (url, id) VALUES ($1, $2)', [url, id]);
+    }
 
-    ctx.body = shortId(url);
+    ctx.body = {
+      id: id,
+    };
+  })
+  .get('/:id', async (ctx) => {
+    const row = await db.oneOrNone('SELECT url FROM data WHERE id = $1', ctx.params.id);
+    if (row) {
+      let url = row.url;
+      if (!url.startsWith('http')) {
+        url = 'http://' + url;
+      }
+      ctx.redirect(url);
+    } else {
+      ctx.throw(404);
+    }
   });
 
 app.use(router.routes());
@@ -53,9 +86,3 @@ if (process.env.NODE_ENV === 'production') {
 	app.listen(8080);
 	console.log('Listening on port 8080');
 }
-
-// cleanup on exit/restart
-process.on('SIGINT', () => {
-  // TODO require('./db/pg').end();
-  process.exit();
-});

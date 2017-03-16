@@ -10,6 +10,19 @@
       body: JSON.stringify({
         url: url,
       }),
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function success(json) {
+      var results = document.getElementById('results');
+      var prettyUrl = location.host + '/' + json.id;
+      var url = location.protocol + '//' + prettyUrl;
+      results.insertAdjacentHTML('afterbegin', '<div><a href="' + url + '" target="_blank">' + prettyUrl + '</div>');
+    })
+    .catch(function error(error) {
+      // TODO handle error
+      alert(error);
     });
   }
 </script>
@@ -24,6 +37,7 @@
           <button class="btn btn-primary" type="button" onclick="shorten()">Shorten</button>
         </span>
       </div>
+      <div id="results" />
     </div>
   </div>
 </div>
