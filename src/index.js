@@ -47,8 +47,8 @@ app.use(router.allowedMethods());
 
 if (process.env.NODE_ENV === 'production') {
   const port = process.env.PORT || 8080;
-	app.listen(port, '127.0.0.1');
-	console.log(`Listening on port 127.0.0.1:${port}`);
+	app.listen(port);
+	console.log(`Listening on port ${port}`);
 } else {
 	app.listen(8080);
 	console.log('Listening on port 8080');
