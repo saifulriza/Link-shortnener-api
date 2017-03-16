@@ -6,18 +6,15 @@
   "author": "Cymen Vig <cymenvig@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.2.2",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.1.0",
     "koa-ejs": "^4.0.0",
     "koa-router": "7.0.1",
     "koa-static": "^3.0.0",
     "shortid": "^2.2.8"
-  },
-  "devDependencies": {
-    "babel-core": "^6.24.0",
-    "babel-loader": "^6.4.1",
-    "babel-preset-env": "^1.2.2",
-    "webpack": "^2.2.1"
   },
   "scripts": {
     "start": "./node_modules/.bin/babel-node --presets env src/index",
