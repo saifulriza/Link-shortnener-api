@@ -24,6 +24,8 @@ app.use(serve('./public'));
 
 // normally, I'd split routes into multiple files but keeping in this one for demo
 import Router from 'koa-router';
+import shortId from 'shortid';
+
 const router = new Router();
 
 router
@@ -31,8 +33,13 @@ router
     return ctx.render('home');
   })
   .post('/', (ctx) => {
-    console.log('ctx.request.body', ctx.request.body);
-    ctx.body = ctx.request.body;
+    const { url  } = ctx.request.body;
+
+    // TODO
+    // - if url already shortened, return existing short id
+    // - if url not already shortened, make short id, persist it and return it
+
+    ctx.body = shortId(url);
   });
 
 app.use(router.routes());
