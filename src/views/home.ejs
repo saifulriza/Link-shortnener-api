@@ -1,7 +1,16 @@
 <script type="text/javascript">
   function shorten() {
     var url = document.getElementById('url').value;
-    console.log('url:', url);
+    fetch('/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: url,
+      }),
+    });
   }
 </script>
 

@@ -27,9 +27,13 @@ import Router from 'koa-router';
 const router = new Router();
 
 router
-	.get('/', (ctx) => {
-		return ctx.render('home');
-	});
+  .get('/', (ctx) => {
+    return ctx.render('home');
+  })
+  .post('/', (ctx) => {
+    console.log('ctx.request.body', ctx.request.body);
+    ctx.body = ctx.request.body;
+  });
 
 app.use(router.routes());
 app.use(router.allowedMethods());
