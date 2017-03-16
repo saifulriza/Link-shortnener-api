@@ -1,1 +1,20 @@
-<h1>Hello world!</h1>
+<script type="text/javascript">
+  function shorten() {
+    var url = document.getElementById('url').value;
+    console.log('url:', url);
+  }
+</script>
+
+<div class="container-fluid home">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <h1>URL Shortener</h1>
+      <div class="input-group">
+        <input id="url" type="text" class="form-control" placeholder="Paste link to shorten it">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="button" onclick="shorten()">Shorten</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
