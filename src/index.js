@@ -33,11 +33,6 @@ render(
 import bodyParser from 'koa-bodyparser';
 app.use(bodyParser());
 
-// static files
-import serve from 'koa-static';
-app.use(serve('./public'));
-
-
 // normally, I'd split routes into multiple files but keeping in this one for demo
 import Router from 'koa-router';
 import shortId from 'shortid';
