@@ -6,8 +6,8 @@ free Postgres to your Heroku app).
 ## Requirements
 
 1. PostgreSQL
-2. environment variable `DATABASE_URL` set with PostgreSQL URI
-3. nodejs
+2. Environment variable `DATABASE_URL` set with PostgreSQL URI
+3. Node.js
 
 ## Running
 
