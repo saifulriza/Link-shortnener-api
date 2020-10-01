@@ -4,30 +4,26 @@ const app = new Koa();
 
 // database
 const pgPromise = require('pg-promise')();
-const db = pgPromise(process.env.DATABASE_URL);
+const cn = process.env.DATABASE_URL;
+const db = pgPromise(cn);
 
 // create table if not present
 db.tx(async (t) => {
-  await t.none('CREATE EXTENSION IF NOT EXISTS citext;');
-  await t.none(
-    `CREATE TABLE IF NOT EXISTS data (
+  try {
+    await t.none('CREATE EXTENSION IF NOT EXISTS citext;');
+    await t.none(
+      `CREATE TABLE IF NOT EXISTS data (
       url CITEXT,
       id CITEXT,
       PRIMARY KEY(id, url)
     )`
-  );
+    )
+  } catch (e) {
+    console.log(e)
+  }
+
 });
 
-// views
-import render from 'koa-ejs';
-render(
-  app,
-  {
-    cache: process.env.NODE_ENV === 'production',
-    root: __dirname + '/views',
-    viewExt: 'ejs',
-  }
-);
 
 // body parser
 import bodyParser from 'koa-bodyparser';
@@ -40,11 +36,11 @@ import shortId from 'shortid';
 const router = new Router();
 
 router
-  .get('/', (ctx) => {
-    return ctx.render('home');
-  })
+  // .get('/', (ctx) => {
+  //   return ctx.render('home');
+  // })
   .post('/', async (ctx) => {
-    const { url  } = ctx.request.body;
+    const { url } = ctx.request.body;
 
     const row = await db.oneOrNone('SELECT id FROM data WHERE url = $1', url);
     let id;
