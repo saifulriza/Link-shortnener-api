@@ -4,7 +4,7 @@ const app = new Koa();
 
 // database
 const pgPromise = require('pg-promise')();
-const cn = process.env.DATABASE_URL;
+const cn = process.env.DATABASE_URI;
 const db = pgPromise(cn);
 
 // create table if not present
