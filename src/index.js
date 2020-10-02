@@ -1,7 +1,5 @@
 import Koa from 'koa';
 const app = new Koa();
-const cors = require('@koa/cors');
-app.use(cors());
 
 // database
 const pgPromise = require('pg-promise')();
@@ -24,6 +22,9 @@ db.tx(async (t) => {
 
 });
 
+// cors
+import cors from '@koa/cors'
+app.use(cors());
 
 // body parser
 import bodyParser from 'koa-bodyparser';
