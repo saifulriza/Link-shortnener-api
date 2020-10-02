@@ -26,7 +26,8 @@ db.tx(async (t) => {
 
 // body parser
 import bodyParser from 'koa-bodyparser';
-app.use(bodyParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // normally, I'd split routes into multiple files but keeping in this one for demo
 import Router from 'koa-router';
