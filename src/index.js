@@ -1,6 +1,8 @@
 import Koa from 'koa';
+const cors = require('@koa/cors');
 
 const app = new Koa();
+app.use(cors());
 
 // database
 const pgPromise = require('pg-promise')();
