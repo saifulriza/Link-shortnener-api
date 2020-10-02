@@ -6,7 +6,7 @@
   "author": "Cymen Vig <cymenvig@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": "7.7.3"
+    "node": "12.x"
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
