@@ -1,7 +1,6 @@
 import Koa from 'koa';
-const cors = require('@koa/cors');
-
 const app = new Koa();
+const cors = require('@koa/cors');
 app.use(cors());
 
 // database
