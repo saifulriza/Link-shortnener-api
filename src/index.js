@@ -39,7 +39,6 @@ const router = new Router();
 router
   .post('/', async (ctx) => {
     const { url } = ctx.request.body;
-
     const row = await db.oneOrNone('SELECT id FROM data WHERE url = $1', url);
     let id;
     if (row) {
