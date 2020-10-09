@@ -37,9 +37,6 @@ import shortId from 'shortid';
 const router = new Router();
 
 router
-  // .get('/', (ctx) => {
-  //   return ctx.render('home');
-  // })
   .post('/', async (ctx) => {
     const { url } = ctx.request.body;
 
