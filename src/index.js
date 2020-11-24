@@ -1,7 +1,6 @@
 import Koa from "koa";
 const app = new Koa();
-
-const isURL = require("isurl");
+const urlExist = require("url-exist");
 
 // database
 const pgPromise = require("pg-promise")();
@@ -40,12 +39,16 @@ const router = new Router();
 router
   .post("/", async (ctx) => {
     let url = ctx.request.body.url;
-    if (!isURL(new URL(url))) {
-      ctx.body = {
-        status: 400,
-        message: "Url tidak valid",
-      };
-    }
+
+    (async () => {
+      const exists = await urlExist(url);
+      if (!exists) {
+        ctx.body = {
+          status: 400,
+          message: "Url tidak valid",
+        };
+      }
+    })();
 
     const row = await db.oneOrNone("SELECT id FROM data WHERE url = $1", url);
     let id;
