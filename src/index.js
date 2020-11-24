@@ -40,28 +40,30 @@ router
   .post("/", async (ctx) => {
     let url = ctx.request.body.url;
 
-    (async () => {
-      const exists = await urlExist(url);
-      if (!exists) {
-        ctx.body = {
-          status: 400,
-          message: "Url tidak valid",
-        };
-      }
-    })();
-
     const row = await db.oneOrNone("SELECT id FROM data WHERE url = $1", url);
     let id;
     if (row) {
       id = row.id;
     } else {
-      id = shortId(url);
-      await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [url, id]);
+      (async () => {
+        const exists = await urlExist(url);
+        if (!exists) {
+          ctx.body = {
+            status: 400,
+            message: "Url tidak valid",
+          };
+        } else {
+          id = shortId(url);
+          await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [
+            url,
+            id,
+          ]);
+          ctx.body = {
+            id: id,
+          };
+        }
+      })();
     }
-
-    ctx.body = {
-      id: id,
-    };
   })
   .get("/:id", async (ctx) => {
     const row = await db.oneOrNone(
