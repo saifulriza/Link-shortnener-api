@@ -15,6 +15,7 @@
     "babel-loader": "^6.4.1",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-preset-env": "^1.2.2",
+    "isurl": "^4.0.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.1.0",
     "koa-router": "7.0.1",
