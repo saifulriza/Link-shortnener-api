@@ -38,10 +38,9 @@ import shortId from "shortid";
 const router = new Router();
 
 router
-  .post("/", async (ctx, res) => {
-    if (isURL(new URL(ctx.request.body))) {
-      const { url } = ctx.request.body;
-    } else {
+  .post("/", async (ctx) => {
+    let url = ctx.request.body.url;
+    if (!isURL(new URL(url))) {
       ctx.body = {
         status: 400,
         message: "Url tidak valid",
