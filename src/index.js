@@ -51,6 +51,7 @@ router
           ctx.body = {
             status: 400,
             message: "Url tidak valid",
+            url: url,
           };
         } else {
           id = shortId(url);
