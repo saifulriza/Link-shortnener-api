@@ -45,25 +45,28 @@ router
     if (row) {
       id = row.id;
     } else {
-      (async () => {
-        const exists = await urlExist(url);
-        if (!exists) {
-          ctx.body = {
-            status: 400,
-            message: "Url tidak valid",
-            url: url,
-          };
-        } else {
-          id = shortId(url);
-          await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [
-            url,
-            id,
-          ]);
-          ctx.body = {
-            id: id,
-          };
-        }
-      })();
+      try {
+        (async () => {
+          const exists = await urlExist(url);
+          if (!exists) {
+          } else {
+            id = shortId(url);
+            await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [
+              url,
+              id,
+            ]);
+          }
+        })();
+      } catch (e) {
+        ctx.body = {
+          status: 400,
+          message: "Url tidak valid",
+        };
+      } finally {
+        ctx.body = {
+          id: id,
+        };
+      }
     }
   })
   .get("/:id", async (ctx) => {
