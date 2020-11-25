@@ -48,8 +48,7 @@ router
       try {
         (async () => {
           const exists = await urlExist(url);
-          if (!exists) {
-          } else {
+          if (exists) {
             id = shortId(url);
             await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [
               url,
