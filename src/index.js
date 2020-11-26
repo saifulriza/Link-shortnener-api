@@ -3,7 +3,9 @@ const app = new Koa();
 
 // database
 const pgPromise = require("pg-promise")();
-const db = pgPromise(process.env.DATABASE_URL);
+const db = pgPromise(
+  process.env.DATABASE_URL || "https://koneksi.exam/koneksi"
+);
 
 // create table if not present
 db.tx(async (t) => {
@@ -17,9 +19,15 @@ db.tx(async (t) => {
     )`
     );
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 });
+
+function isValidUrl(url) {
+  // if (typeof url != "string") return false;
+  let regex = /((https|http):\/\/)?(www.)?[-a-zA-Z0-9@:%._+~#=]{2,256}[.][a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&\/\/=]*)/g // prettier-ignore
+  return regex.test(url);
+}
 
 // cors
 import cors from "@koa/cors";
@@ -38,18 +46,25 @@ const router = new Router();
 router
   .post("/", async (ctx) => {
     const { url } = ctx.request.body;
-    const row = await db.oneOrNone("SELECT id FROM data WHERE url = $1", url);
-    let id;
-    if (row) {
-      id = row.id;
-    } else {
-      id = shortId(url);
-      await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [url, id]);
-    }
+    if (isValidUrl(url)) {
+      const row = await db.oneOrNone("SELECT id FROM data WHERE url = $1", url);
+      let id;
+      if (row) {
+        id = row.id;
+      } else {
+        id = shortId(url);
+        await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [url, id]);
+      }
 
-    ctx.body = {
-      id: id,
-    };
+      ctx.body = {
+        id: id,
+      };
+    } else {
+      ctx.body = {
+        error: 400,
+        message: "Url tidak valid",
+      };
+    }
   })
   .get("/:id", async (ctx) => {
     const row = await db.oneOrNone(
@@ -73,8 +88,8 @@ app.use(router.allowedMethods());
 if (process.env.NODE_ENV === "production") {
   const port = process.env.PORT || 8080;
   app.listen(port);
-  console.log(`Listening on port ${port}`);
+  // console.log(`Listening on port ${port}`);
 } else {
   app.listen(8080);
-  console.log("Listening on port 8080");
+  // console.log("Listening on port 8080");
 }
