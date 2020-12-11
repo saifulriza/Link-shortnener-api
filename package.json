@@ -9,10 +9,8 @@
     "node": "12.x"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "@koa/cors": "^3.1.0",
-    "babel-cli": "^6.24.0",
-    "babel-core": "^6.24.0",
-    "babel-loader": "^6.4.1",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.1.0",
@@ -22,12 +20,15 @@
     "webpack": "^2.2.1"
   },
   "scripts": {
-    "start": "npm cache clean --force && ./node_modules/.bin/babel-node --presets env src/index",
+    "build": "./node_modules/.bin/babel src/index.js --presets=@babel/env --out-dir build",
     "dev": "nodemon src/index --exec babel-node --presets env",
+    "start": "npm run build && node ./build/index.js",
     "test": "jest"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.12.7",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.10",
     "jest": "^26.6.3",
     "nodemon": "^2.0.4"
   }
