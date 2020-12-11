@@ -22,9 +22,12 @@ db.tx(async (t) => {
 });
 
 function isValidUrl(url) {
-  // if (typeof url != "string") return false;
-  let regex = /((https|http):\/\/)?(www.)?[-a-zA-Z0-9@:%._+~#=]{2,256}[.][a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&\/\/=]*)/g // prettier-ignore
-  return regex.test(url);
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // cors
