@@ -43,19 +43,6 @@ function isValidUrl(url) {
   }
 }
 
-// cors
-import cors from "@koa/cors";
-app.use(cors());
-
-// body parser
-import bodyParser from "koa-bodyparser";
-app.use(bodyParser());
-
-// normally, I'd split routes into multiple files but keeping in this one for demo
-import Router from "koa-router";
-
-const router = new Router();
-
 let emojis = [
   "😄",
   "😃",
