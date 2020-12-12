@@ -17,9 +17,23 @@ db.tx(async (t) => {
     )`
     );
   } catch (e) {
-    // console.log(e);
+    console.log(e);
   }
 });
+
+// cors
+import cors from "@koa/cors";
+app.use(cors());
+
+// body parser
+import bodyParser from "koa-bodyparser";
+app.use(bodyParser());
+
+// normally, I'd split routes into multiple files but keeping in this one for demo
+import Router from "koa-router";
+import shortId from "shortid";
+
+const router = new Router();
 
 function isValidUrl(url) {
   try {
@@ -873,24 +887,21 @@ let randomChar = Math.random().toString(36).substring(2);
 router
   .post("/", async (ctx) => {
     const { url } = ctx.request.body;
-    if (isValidUrl(url)) {
-      const row = await db.oneOrNone("SELECT id FROM data WHERE url = $1", url);
-      let id;
-      if (row) {
-        id = row.id;
-      } else {
-        id = randomEmoji() + randomEmoji() + randomChar;
-        await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [url, id]);
-      }
 
-      ctx.body = {
-        id: id,
-      };
+    const row = await db.oneOrNone("SELECT id FROM data WHERE url = $1", url);
+    let id;
+    if (row) {
+      id = row.id;
     } else {
-      ctx.body = {
-        error: 400,
-        message: "Url tidak valid",
-      };
+      id = randomEmoji() + randomEmoji() + randomChar;
+      if (isValidUrl(url)) {
+        await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [url, id]);
+        ctx.body = {
+          id: id,
+        };
+      } else {
+        ctx.body = { error: "url tidak valid" };
+      }
     }
   })
   .get("/:id", async (ctx) => {
@@ -915,8 +926,9 @@ app.use(router.allowedMethods());
 if (process.env.NODE_ENV === "production") {
   const port = process.env.PORT || 8080;
   app.listen(port);
-  // console.log(`Listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 } else {
   app.listen(8080);
-  // console.log("Listening on port 8080");
+  console.log("Listening on port 8080");
 }
+
