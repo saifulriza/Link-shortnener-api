@@ -43,6 +43,17 @@ function isValidUrl(url) {
   }
 }
 
+async function makeid(length) {
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 let emojis = [
   "😄",
   "😃",
@@ -868,7 +879,7 @@ let emojis = [
 function randomEmoji() {
   return emojis[Math.floor(Math.random() * emojis.length)];
 }
-let randomChar = Math.random().toString(36).substring(2);
+let randomChar = await makeid(2);
 
 router
   .post("/", async (ctx) => {
