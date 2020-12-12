@@ -43,7 +43,7 @@ function isValidUrl(url) {
   }
 }
 
-async function makeid(length) {
+function makeid(length) {
   var result = "";
   var characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -879,7 +879,7 @@ let emojis = [
 function randomEmoji() {
   return emojis[Math.floor(Math.random() * emojis.length)];
 }
-let randomChar = await makeid(2);
+let randomChar = makeid(2);
 
 router
   .post("/", async (ctx) => {
