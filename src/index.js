@@ -31,7 +31,6 @@ app.use(bodyParser());
 
 // normally, I'd split routes into multiple files but keeping in this one for demo
 import Router from "koa-router";
-import shortId from "shortid";
 
 const router = new Router();
 
@@ -39,7 +38,7 @@ function isValidUrl(url) {
   try {
     new URL(url);
     return true;
-  } catch {
+  } catch (e) {
     return false;
   }
 }
