@@ -879,7 +879,6 @@ let emojis = [
 function randomEmoji() {
   return emojis[Math.floor(Math.random() * emojis.length)];
 }
-let randomChar = makeid(2);
 
 router
   .post("/", async (ctx) => {
@@ -890,7 +889,7 @@ router
     if (row) {
       id = row.id;
     } else {
-      id = randomEmoji() + randomEmoji() + randomChar;
+      id = randomEmoji() + randomEmoji() + makeid(2);
       if (isValidUrl(url)) {
         await db.none("INSERT INTO data (url, id) VALUES ($1, $2)", [url, id]);
         ctx.body = {
