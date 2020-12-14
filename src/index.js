@@ -35,6 +35,9 @@ import Router from "koa-router";
 const router = new Router();
 
 function isValidUrl(url) {
+  if (!url.startsWith("http")) {
+    url = "http://" + url;
+  }
   try {
     new URL(url);
     return true;
