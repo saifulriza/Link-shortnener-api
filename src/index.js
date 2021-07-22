@@ -3,8 +3,7 @@ const app = new Koa();
 
 // database
 const pgPromise = require("pg-promise")();
-pgPromise.pg.defaults.ssl = true;
-const db = pgPromise(process.env.DATABASE_URL);
+const db = pgPromise(process.env.DATABASE_URL?ssl=true);
 
 // create table if not present
 db.tx(async (t) => {
